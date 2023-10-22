@@ -79,8 +79,13 @@ int main(int argc, char *argv[])
     auto &cfg = config();
     if (config_path.empty()) {
         std::string home_cfg_path
-            = std::getenv("HOME") + std::string("/.config/commander.cfg");
+            = std::string("commander.cfg");
         if (fileExists(home_cfg_path)) config_path = std::move(home_cfg_path);
+        else {
+            std::cerr << "Write a new config_path =[" << home_cfg_path << "]\n";
+            cfg.Save(home_cfg_path);
+            config_path = std::move(home_cfg_path);
+        }
     }
     if (!config_prelude_path.empty()) cfg.Load(config_prelude_path);
     if (!config_path.empty()) cfg.Load(config_path);
@@ -143,6 +148,7 @@ int main(int argc, char *argv[])
 
     //Quit
     SDL_utils::hastalavista();
+    cfg.Save(config_path, l_commander.m_panelLeft.getCurrentPath(), l_commander.m_panelRight.getCurrentPath());
 
     return 0;
 }

@@ -16,6 +16,12 @@ class CCommander : public CWindow
     // Destructor
     virtual ~CCommander(void);
 
+    // The two panels
+    CPanel m_panelLeft;
+    CPanel m_panelRight;
+    CPanel* m_panelSource;
+    CPanel* m_panelTarget;
+
     private:
 
     // Forbidden
@@ -65,12 +71,6 @@ class CCommander : public CWindow
     bool actionSelect();
     bool actionPageUp();
     bool actionPageDown();
-
-    // The two panels
-    CPanel m_panelLeft;
-    CPanel m_panelRight;
-    CPanel* m_panelSource;
-    CPanel* m_panelTarget;
 
     SDL_Surface *m_background;
 };

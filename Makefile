@@ -7,7 +7,7 @@ CXXFLAGS := -Os -marm -mtune=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp -march
 SDL_CONFIG := $(shell $(CXX) -print-sysroot)/usr/bin/sdl-config
 CXXFLAGS += $(shell $(SDL_CONFIG) --cflags)
 
-CXXFLAGS += -DPATH_DEFAULT=\"/mnt/SDCARD\"
+CXXFLAGS += -DPATH_DEFAULT=\"/mnt\"
 CXXFLAGS += -DFILE_SYSTEM=\"/dev/block/mmcblk1\"
 CXXFLAGS += -DCMDR_KEY_UP=SDLK_w
 CXXFLAGS += -DCMDR_KEY_RIGHT=SDLK_d

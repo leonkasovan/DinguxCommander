@@ -111,7 +111,7 @@ int Screen::init()
     }
 #else
     surface = SetVideoMode(screen.actual_w, screen.actual_h, SCREEN_BPP,
-        SDL_SWSURFACE | SDL_RESIZABLE);
+        SDL_SWSURFACE);
     if (surface == nullptr) {
         std::fprintf(stderr, "SDL_SetVideoMode failed: %s\n", SDL_GetError());
         return 1;

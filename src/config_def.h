@@ -9,11 +9,11 @@
 #endif
 
 #ifndef SCREEN_WIDTH
-#define SCREEN_WIDTH 320
+#define SCREEN_WIDTH 640
 #endif
 
 #ifndef SCREEN_HEIGHT
-#define SCREEN_HEIGHT 240
+#define SCREEN_HEIGHT 480
 #endif
 
 #ifndef SCREEN_BPP
@@ -39,7 +39,7 @@
 #endif
 
 #ifndef PATH_DEFAULT_RIGHT
-#define PATH_DEFAULT_RIGHT getenv("HOME")
+#define PATH_DEFAULT_RIGHT "/"
 #endif
 
 #ifndef FILE_SYSTEM

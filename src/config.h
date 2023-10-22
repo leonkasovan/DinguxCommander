@@ -23,7 +23,7 @@ struct Config {
     std::string path_default_right = PATH_DEFAULT_RIGHT;
 
     // Used if `path_default_right` does not exist or left path == right path.
-    std::string path_default_right_fallback;
+    std::string path_default_right_fallback = "/";
 
     // Default filesystem for Disk info
     std::string file_system = FILE_SYSTEM;
@@ -69,7 +69,9 @@ struct Config {
     bool osk_key_system_is_backspace = false;
 #endif
 
-    void Load(const std::string &path);
+    void Load(const std::string &config_path);
+    void Save(const std::string &config_path);
+    void Save(const std::string &config_path, const std::string l_path, const std::string r_path);
 };
 
 Config &config();

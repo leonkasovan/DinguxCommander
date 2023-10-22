@@ -243,3 +243,46 @@ void Config::Load(const std::string &path)
         }
     }
 }
+
+
+void Config::Save(const std::string &config_path)
+{
+    std::ofstream outputFile(config_path);
+    if (outputFile.is_open()) {
+        // Write text to the file
+        outputFile << "# Config for DinguxCommander RG35XX" << std::endl;
+        outputFile << "# Modified and compiled by Dhani.Novan@gmail.com, October 2023" << std::endl;
+        outputFile << "path_default=" << path_default << std::endl;
+        outputFile << "path_default_right=" << path_default_right << std::endl;
+        outputFile << "path_default_right_fallback=" << path_default_right_fallback << std::endl;
+        outputFile << "file_system=" << file_system << std::endl;
+        outputFile << "res_dir=" << res_dir << std::endl;
+
+        // Close the file when you're done
+        outputFile.close();
+        std::cout << "Config has been written to the file: " << config_path << std::endl;
+    } else {
+        std::cerr << "Failed to open the file for writing:" << config_path << std::endl;
+    }
+}
+
+void Config::Save(const std::string &config_path, const std::string l_path, const std::string r_path)
+{
+    std::ofstream outputFile(config_path);
+    if (outputFile.is_open()) {
+        // Write text to the file
+        outputFile << "# Config for DinguxCommander RG35XX" << std::endl;
+        outputFile << "# Modified and compiled by Dhani.Novan@gmail.com, October 2023" << std::endl;
+        outputFile << "path_default=" << l_path << std::endl;
+        outputFile << "path_default_right=" << r_path << std::endl;
+        outputFile << "path_default_right_fallback=" << path_default_right_fallback << std::endl;
+        outputFile << "file_system=" << file_system << std::endl;
+        outputFile << "res_dir=" << res_dir << std::endl;
+ 
+        // Close the file when you're done
+        outputFile.close();
+        std::cout << "Config has been written to the file: " << config_path << std::endl;
+    } else {
+        std::cerr << "Failed to open the file for writing:" << config_path << std::endl;
+    }
+}
