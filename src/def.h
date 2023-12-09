@@ -5,7 +5,7 @@
 #define INHIBIT(X) /* X */
 
 #ifndef FONTS
-#define FONTS {"/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf",10},{"FreeSans.ttf",10},{"DroidSansFallback.ttf",9}
+#define FONTS {"/usr/share/fonts/dejavu/DejaVuSansCondensed.ttf",14},{"/usr/share/fonts/truetype/droid/DroidSansFallback.ttf",9}
 #endif
 
 // Font stack to use on screens with low DPI.
