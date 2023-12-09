@@ -103,7 +103,11 @@ bool CCommander::keyPress(
 {
     CWindow::keyPress(event, key, button);
     const auto &c = config();
+#ifdef USE_SDL2
+    if (key == c.key_system || button == c.gamepad_system) {	// added MENU for RG35xx
+#else
     if (key == c.key_system || (key == c.key_menu) || button == c.gamepad_system) {	// added MENU for RG35xx
+#endif
         if (openSystemMenu()) m_panelSource->refresh();
         return true;
     }

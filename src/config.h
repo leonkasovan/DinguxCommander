@@ -44,7 +44,11 @@ struct Config {
     SDLC_Keycode key_system = CMDR_KEY_SYSTEM;
     SDLC_Keycode key_transfer = CMDR_KEY_TRANSFER;
     SDLC_Keycode key_up = CMDR_KEY_UP;
+#ifdef USE_SDL2
+    // SDLC_Keycode key_menu = CMDR_KEY_MENU;	// added for RG35xx
+#else
     SDLC_Keycode key_menu = CMDR_KEY_MENU;	// added for RG35xx
+#endif
 
     // Gamepad mappings (only used with SDL2)
     ControllerButton gamepad_down = CMDR_GAMEPAD_DOWN;
