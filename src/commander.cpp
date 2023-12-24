@@ -403,6 +403,11 @@ const bool CCommander::openSystemMenu(void)
         l_dialog.addOption("New directory");
         l_dialog.addOption("Disk info");
         l_dialog.addOption("Quit");
+#ifdef KORIKI
+        l_dialog.addOption("Go /userdata/system/App");
+        l_dialog.addOption("Go /userdata/Roms");
+        l_dialog.addOption("Go /userdata/system/.simplemenu");
+#endif
         l_dialog.init();
         l_dialogRetVal = l_dialog.execute();
     }
@@ -436,6 +441,17 @@ const bool CCommander::openSystemMenu(void)
             // Quit
             m_retVal = -1;
             break;
+#ifdef KORIKI
+        case 6:
+            m_panelSource->open("/userdata/system/App");
+            break;
+        case 7:
+            m_panelSource->open("/userdata/Roms");
+            break;
+        case 8:
+            m_panelSource->open("/userdata/system/.simplemenu");
+            break;
+#endif
         default:
             break;
     }
