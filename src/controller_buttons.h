@@ -32,6 +32,7 @@ enum class ControllerButton : std::uint8_t {
     RIGHTSTICK,    // aka R3
     START,
     SELECT,
+    MENU,
 };
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -39,6 +40,8 @@ enum class ControllerButton : std::uint8_t {
 ControllerButton ControllerButtonFromSdlEvent(const SDL_Event &event);
 bool IsControllerButtonDown(
     SDL_GameController *controller, ControllerButton button);
+#else
+ControllerButton ControllerButtonFromSdlEvent(const SDL_Event &event);
 #endif
 
 #endif // CONTROLLER_BUTTONS_H_

@@ -20,6 +20,7 @@ const SDL_Color Globals::g_colorTextTitle = {COLOR_TEXT_TITLE};
 const SDL_Color Globals::g_colorTextDir = {COLOR_TEXT_DIR};
 const SDL_Color Globals::g_colorTextSelected = {COLOR_TEXT_SELECTED};
 std::vector<CWindow *> Globals::g_windows;
+SDL_Joystick* joystick;
 
 namespace {
 
@@ -99,7 +100,7 @@ int main(int argc, char *argv[])
 
     // Init SDL
     {
-        std::uint32_t init_flags = SDL_INIT_VIDEO;
+        std::uint32_t init_flags = SDL_INIT_VIDEO|SDL_INIT_JOYSTICK;
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         init_flags |= SDL_INIT_GAMECONTROLLER;
 #endif
@@ -112,6 +113,13 @@ int main(int argc, char *argv[])
         SDL_ClearError();
     }
 
+#ifdef USE_SDL
+    joystick = SDL_JoystickOpen(0); // Open the first joystick
+    if (!joystick) {
+        std::cerr << "SDL_JoystickOpen failed: " << SDL_GetError() << std::endl;
+        return 1;
+    }
+#endif
     // Hide cursor before creating the output surface.
     SDL_ShowCursor(SDL_DISABLE);
 
@@ -123,11 +131,9 @@ int main(int argc, char *argv[])
         std::cerr << "TTF_Init failed: " << SDL_GetError() << std::endl;
         return 1;
     }
-
 #ifndef USE_SDL2
     SDL_EnableUNICODE(1);
 #endif
-
     // Create instances
     CResourceManager::instance();
 
@@ -146,9 +152,11 @@ int main(int argc, char *argv[])
     // Main loop
     l_commander.execute();
 
-    //Quit
-    SDL_utils::hastalavista();
     cfg.Save(config_path, l_commander.m_panelLeft.getCurrentPath(), l_commander.m_panelRight.getCurrentPath());
-
+    //Quit
+#ifdef USE_SDL
+    SDL_JoystickClose(joystick);
+#endif
+    SDL_utils::hastalavista();
     return 0;
 }

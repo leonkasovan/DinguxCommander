@@ -10,6 +10,7 @@ ControllerButton ControllerButtonFromSdlEvent(const SDL_Event &event)
 {
     switch (event.type) {
         case SDL_CONTROLLERAXISMOTION:
+            fprintf(stderr,"src/controller_buttons.cpp:%d event SDL_CONTROLLERAXISMOTION\n",__LINE__);
             switch (event.caxis.axis) {
                 case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
                     if (event.caxis.value < 8192) { // 25% pressed
@@ -35,24 +36,30 @@ ControllerButton ControllerButtonFromSdlEvent(const SDL_Event &event)
             break;
         case SDL_CONTROLLERBUTTONDOWN:
         case SDL_CONTROLLERBUTTONUP:
+            fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON=%d\n",__LINE__,event.cbutton.button);
             switch (event.cbutton.button) {
                 case SDL_CONTROLLER_BUTTON_A: return ControllerButton::A;
                 case SDL_CONTROLLER_BUTTON_B: return ControllerButton::B;
                 case SDL_CONTROLLER_BUTTON_X: return ControllerButton::X;
                 case SDL_CONTROLLER_BUTTON_Y: return ControllerButton::Y;
                 case SDL_CONTROLLER_BUTTON_LEFTSTICK:
+                    fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_LEFTSTICK=%d\n",__LINE__,event.cbutton.button);
                     return ControllerButton::LEFTSTICK;
                 case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
+                    fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_RIGHTSTICK=%d\n",__LINE__,event.cbutton.button);
                     return ControllerButton::RIGHTSTICK;
                 case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+                    fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_LEFTSHOULDER=%d\n",__LINE__,event.cbutton.button);
                     return ControllerButton::LEFTSHOULDER;
                 case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+                    fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_RIGHTSHOULDER=%d\n",__LINE__,event.cbutton.button);
                     return ControllerButton::RIGHTSHOULDER;
                 case SDL_CONTROLLER_BUTTON_START:
                     return ControllerButton::START;
                 case SDL_CONTROLLER_BUTTON_BACK:
                     return ControllerButton::SELECT;
-                case SDL_CONTROLLER_BUTTON_DPAD_UP: return ControllerButton::UP;
+                case SDL_CONTROLLER_BUTTON_DPAD_UP: 
+                    return ControllerButton::UP;
                 case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
                     return ControllerButton::DOWN;
                 case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
@@ -61,7 +68,9 @@ ControllerButton ControllerButtonFromSdlEvent(const SDL_Event &event)
                     return ControllerButton::RIGHT;
                 default: break;
             }
-        default: break;
+        default: 
+            fprintf(stderr,"src/controller_buttons.cpp:%d event.type=%d\n",__LINE__,event.type);
+            break;
     }
     return ControllerButton::NONE;
 }
@@ -116,5 +125,32 @@ bool IsControllerButtonDown(
                 controller, SDL_CONTROLLER_BUTTON_BACK);
     }
     return false;
+}
+#elif defined(KORIKI) && defined(USE_SDL)
+ControllerButton ControllerButtonFromSdlEvent(const SDL_Event &event)
+{
+    switch (event.type) {
+        case SDL_JOYBUTTONDOWN:
+            switch (event.jbutton.button) {
+                case 0: return ControllerButton::B;
+                case 1: return ControllerButton::A;
+                case 2: return ControllerButton::Y;
+                case 3: return ControllerButton::X;
+                case 4: return ControllerButton::LEFTSHOULDER;
+                case 5: return ControllerButton::RIGHTSHOULDER;
+                case 6: return ControllerButton::TRIGGERLEFT;
+                case 7: return ControllerButton::TRIGGERRIGHT;
+                case 8: return ControllerButton::SELECT;
+                case 9: return ControllerButton::START;
+                case 10: return ControllerButton::MENU;
+                case 13: return ControllerButton::UP;
+                case 14: return ControllerButton::DOWN;
+                case 15: return ControllerButton::LEFT;
+                case 16: return ControllerButton::RIGHT;
+                default: break;
+            }
+        break;
+    }
+    return ControllerButton::NONE;
 }
 #endif

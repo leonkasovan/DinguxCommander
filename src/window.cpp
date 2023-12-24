@@ -110,10 +110,14 @@ int CWindow::execute()
                 case SDL_QUIT: return m_retVal;
 #ifdef USE_SDL2
                 case SDL_CONTROLLERDEVICEADDED:
+                    fprintf(stderr,"src/window.cpp:%d Event SDL_CONTROLLERDEVICEADDED\n",__LINE__);
                     SDL_GameControllerOpen(event.cdevice.which);
                     break;
                 case SDL_CONTROLLERAXISMOTION:
-                case SDL_CONTROLLERBUTTONDOWN: {
+                fprintf(stderr,"src/window.cpp:%d Event SDL_CONTROLLERAXISMOTION\n",__LINE__);
+                case SDL_CONTROLLERBUTTONDOWN: 
+                fprintf(stderr,"src/window.cpp:%d Event SDL_CONTROLLERBUTTON\n",__LINE__);
+                {
                     bool thumbStickEvent = false;
                     if (event.type == SDL_CONTROLLERAXISMOTION) {
                         constexpr int AxisDeadzoneX = 16000;
@@ -149,6 +153,7 @@ int CWindow::execute()
                     if (!thumbStickEvent) {
                         const ControllerButton button
                             = ControllerButtonFromSdlEvent(event);
+                        fprintf(stderr,"src/window.cpp:%d button= %d\n",__LINE__,button);
                         SDL_utils::setMouseCursorEnabled(false);
                         l_render = this->keyPress(event, SDLK_UNKNOWN, button)
                             || l_render;
@@ -180,12 +185,26 @@ int CWindow::execute()
                     }
                     break;
 #else
+                case SDL_JOYBUTTONDOWN:
+                    {
+                    const ControllerButton button = ControllerButtonFromSdlEvent(event);
+                    SDL_utils::setMouseCursorEnabled(false);
+                    l_render = this->keyPress(event, SDLK_UNKNOWN, button) || l_render;
+                    if (m_retVal) l_loop = false;
+                    }
+                    break;
+                case SDL_JOYBUTTONUP:
+			        // fprintf(stderr,"Event SDL_JOYBUTTONUP %d\n", event.jbutton.button);
+                    break;
                 case SDL_VIDEORESIZE:
                     l_render = true;
                     ResetFrameDeadline();
                     screen.onResize(event.resize.w, event.resize.h);
                     triggerOnResize();
                     break;
+                default:
+			        // fprintf(stderr,"Event.type: %d\n", event.type);
+		            break;
 #endif
             }
         }
@@ -194,12 +213,14 @@ int CWindow::execute()
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         const int num_joysticks = SDL_NumJoysticks();
+        std::fprintf(stderr, "src/window.cpp:%d num_joysticks\n",__LINE__, num_joysticks);
         for (int i = 0; i < num_joysticks; ++i) {
             if (!SDL_IsGameController(i)) continue;
             SDL_GameController *controller = SDL_GameControllerFromInstanceID(
                 SDL_JoystickGetDeviceInstanceID(i));
             if (controller == nullptr) continue;
             l_render = this->gamepadHold(controller) || l_render;
+            std::fprintf(stderr, "src/window.cpp:%d joysticks ok\n",__LINE__);
         }
 
         // Thumb stick movement.

@@ -7,7 +7,7 @@
 #ifdef USE_SDL2
 #include <SDL2_rotozoom.h>
 #else
-#include <SDL_rotozoom.h>
+#include "SDL_rotozoom.h"
 #endif
 #include "def.h"
 #include "fileutils.h"

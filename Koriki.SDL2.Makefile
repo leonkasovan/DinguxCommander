@@ -1,14 +1,14 @@
 #
-#	DinguxCommander Makefile for RG35xx garlic 
+#	DinguxCommander Makefile for RG35xx Koriki SDL 2.0
 #
 
 CXXFLAGS := -Os -marm -march=armv7-a -mtune=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=hard
 SDL_CONFIG := pkg-config sdl2
 CXXFLAGS += -DUSE_SDL2
+CXXFLAGS += -DKORIKI
 CXXFLAGS += $(shell $(SDL_CONFIG) --cflags)
 CXXFLAGS += -DPATH_DEFAULT=\"/mnt\"
 CXXFLAGS += -DFILE_SYSTEM=\"/dev/mmcblk1p1\"
-# CXXFLAGS += -DCMDR_KEY_MENU=SDLK_u		# MENU (added)
 CXXFLAGS += -DOSK_KEY_SYSTEM_IS_BACKSPACE=ON
 CXXFLAGS += -DSCREEN_WIDTH=640
 CXXFLAGS += -DSCREEN_HEIGHT=480
@@ -27,7 +27,7 @@ SUM := @echo
 
 OUTDIR := ./output
 
-EXECUTABLE := $(OUTDIR)/DinguxCommander
+EXECUTABLE := $(OUTDIR)/DinguxCommander_SDL2
 
 OBJS :=	main.o commander.o config.o dialog.o fileLister.o fileutils.o keyboard.o panel.o resourceManager.o \
 	screen.o sdl_ttf_multifont.o sdlutils.o text_edit.o utf8.o text_viewer.o image_viewer.o  window.o controller_buttons.o axis_direction.o \

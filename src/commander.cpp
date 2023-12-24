@@ -103,10 +103,12 @@ bool CCommander::keyPress(
 {
     CWindow::keyPress(event, key, button);
     const auto &c = config();
-#ifdef USE_SDL2
+#if defined(KORIKI) && defined(USE_SDL2)
     if (key == c.key_system || button == c.gamepad_system) {	// added MENU for RG35xx
-#else
-    if (key == c.key_system || (key == c.key_menu) || button == c.gamepad_system) {	// added MENU for RG35xx
+#elif defined(GARLIC)
+    if (key == c.key_system || key == c.key_menu || button == c.gamepad_system) {	// added MENU for RG35xx Garlic
+#elif defined(KORIKI) && defined(USE_SDL)
+    if (key == c.key_system || button == c.gamepad_menu || button == c.gamepad_system) {	// added MENU for RG35xx Koriki
 #endif
         if (openSystemMenu()) m_panelSource->refresh();
         return true;

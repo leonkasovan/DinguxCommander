@@ -4,7 +4,7 @@
 #ifdef USE_SDL2
 #include <SDL2_rotozoom.h>
 #else
-#include <SDL_rotozoom.h>
+#include "SDL_rotozoom.h"
 #endif
 #include "resourceManager.h"
 #include "def.h"
@@ -52,7 +52,6 @@ std::string ResPath(const std::string &path) { return ResDir + path; }
 std::vector<TTF_Font *> LoadFonts(bool low_dpi) {
     const FontSpec *specs = low_dpi ? kLowDpiFonts : kFonts;
     const std::size_t len = low_dpi ? kLowDpiFontsLen : kFontsLen;
-
     std::vector<TTF_Font *> fonts;
     fonts.reserve(len);
     for (std::size_t i = 0; i < len; ++i) {

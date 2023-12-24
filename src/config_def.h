@@ -119,5 +119,8 @@
 #ifndef CMDR_GAMEPAD_TRANSFER
 #define CMDR_GAMEPAD_TRANSFER ControllerButton::START
 #endif
+#ifndef CMDR_GAMEPAD_MENU
+#define CMDR_GAMEPAD_MENU ControllerButton::MENU
+#endif
 
 #endif // CONFIG_DEF_H_

@@ -1,11 +1,11 @@
 #ifndef _DEF_H_
 #define _DEF_H_
 
-//~ #define INHIBIT(X) X
+// #define INHIBIT(X) X
 #define INHIBIT(X) /* X */
 
 #ifndef FONTS
-#define FONTS {"/usr/share/fonts/dejavu/DejaVuSansCondensed.ttf",14},{"/usr/share/fonts/truetype/droid/DroidSansFallback.ttf",9}
+#define FONTS {"/userdata/system/App/Commander_Italic/res/SourceCodePro-Semibold.ttf",16}, {"/usr/share/fonts/dejavu/DejaVuSansCondensed.ttf",14},{"/usr/share/fonts/truetype/droid/DroidSansFallback.ttf",9}
 #endif
 
 // Font stack to use on screens with low DPI.

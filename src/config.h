@@ -44,10 +44,8 @@ struct Config {
     SDLC_Keycode key_system = CMDR_KEY_SYSTEM;
     SDLC_Keycode key_transfer = CMDR_KEY_TRANSFER;
     SDLC_Keycode key_up = CMDR_KEY_UP;
-#ifdef USE_SDL2
-    // SDLC_Keycode key_menu = CMDR_KEY_MENU;	// added for RG35xx
-#else
-    SDLC_Keycode key_menu = CMDR_KEY_MENU;	// added for RG35xx
+#ifdef GARLIC
+    SDLC_Keycode key_menu = CMDR_KEY_MENU;
 #endif
 
     // Gamepad mappings (only used with SDL2)
@@ -63,6 +61,9 @@ struct Config {
     ControllerButton gamepad_system = CMDR_GAMEPAD_SYSTEM;
     ControllerButton gamepad_transfer = CMDR_GAMEPAD_TRANSFER;
     ControllerButton gamepad_up = CMDR_GAMEPAD_UP;
+#if defined(KORIKI) && defined(USE_SDL)
+    ControllerButton gamepad_menu = CMDR_GAMEPAD_MENU;	// added for RG35xx
+#endif    
 
     // On-screen keyboard settings.
 #ifdef OSK_KEY_SYSTEM_IS_BACKSPACE
