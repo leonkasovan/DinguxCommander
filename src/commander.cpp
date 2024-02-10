@@ -407,6 +407,10 @@ const bool CCommander::openSystemMenu(void)
         l_dialog.addOption("Go /userdata/system/App");
         l_dialog.addOption("Go /userdata/Roms");
         l_dialog.addOption("Go /userdata/system/.simplemenu");
+#elif defined(RECALBOX)
+        l_dialog.addOption("Go /recalbox/share/roms");
+        l_dialog.addOption("Go /recalbox/share/system");
+        l_dialog.addOption("Go /recalbox/share/system/logs");
 #endif
         l_dialog.init();
         l_dialogRetVal = l_dialog.execute();
@@ -450,6 +454,16 @@ const bool CCommander::openSystemMenu(void)
             break;
         case 8:
             m_panelSource->open("/userdata/system/.simplemenu");
+            break;
+#elif defined(RECALBOX)
+        case 6:
+            m_panelSource->open("/recalbox/share/roms");
+            break;
+        case 7:
+            m_panelSource->open("/recalbox/share/system");
+            break;
+        case 8:
+            m_panelSource->open("/recalbox/share/system/logs");
             break;
 #endif
         default:
