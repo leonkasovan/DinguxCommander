@@ -114,9 +114,9 @@ int CWindow::execute()
                     SDL_GameControllerOpen(event.cdevice.which);
                     break;
                 case SDL_CONTROLLERAXISMOTION:
-                fprintf(stderr,"src/window.cpp:%d Event SDL_CONTROLLERAXISMOTION\n",__LINE__);
+                // fprintf(stderr,"src/window.cpp:%d Event SDL_CONTROLLERAXISMOTION\n",__LINE__);
                 case SDL_CONTROLLERBUTTONDOWN: 
-                fprintf(stderr,"src/window.cpp:%d Event SDL_CONTROLLERBUTTON\n",__LINE__);
+                // fprintf(stderr,"src/window.cpp:%d Event SDL_CONTROLLERBUTTON\n",__LINE__);
                 {
                     bool thumbStickEvent = false;
                     if (event.type == SDL_CONTROLLERAXISMOTION) {
@@ -153,7 +153,7 @@ int CWindow::execute()
                     if (!thumbStickEvent) {
                         const ControllerButton button
                             = ControllerButtonFromSdlEvent(event);
-                        fprintf(stderr,"src/window.cpp:%d button= %d\n",__LINE__,button);
+                        // fprintf(stderr,"src/window.cpp:%d button= %d\n",__LINE__,button);
                         SDL_utils::setMouseCursorEnabled(false);
                         l_render = this->keyPress(event, SDLK_UNKNOWN, button)
                             || l_render;
@@ -213,14 +213,14 @@ int CWindow::execute()
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         const int num_joysticks = SDL_NumJoysticks();
-        std::fprintf(stderr, "src/window.cpp:%d num_joysticks\n",__LINE__, num_joysticks);
+        // std::fprintf(stderr, "src/window.cpp:%d num_joysticks\n",__LINE__, num_joysticks);
         for (int i = 0; i < num_joysticks; ++i) {
             if (!SDL_IsGameController(i)) continue;
             SDL_GameController *controller = SDL_GameControllerFromInstanceID(
                 SDL_JoystickGetDeviceInstanceID(i));
             if (controller == nullptr) continue;
             l_render = this->gamepadHold(controller) || l_render;
-            std::fprintf(stderr, "src/window.cpp:%d joysticks ok\n",__LINE__);
+            // std::fprintf(stderr, "src/window.cpp:%d joysticks ok\n",__LINE__);
         }
 
         // Thumb stick movement.

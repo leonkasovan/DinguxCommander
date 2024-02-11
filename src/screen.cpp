@@ -5,7 +5,7 @@
 #include <cstdio>
 
 #include "sdlutils.h"
-
+#include "def.h"
 Screen screen;
 
 namespace {
@@ -15,9 +15,15 @@ SDL_Surface *SetVideoMode(int width, int height, int bpp, std::uint32_t flags)
 {
     std::fprintf(stderr, "Setting video mode %dx%d bpp=%u flags=0x%08X\n",
         width, height, bpp, flags);
-    std::fflush(stderr);
     auto *result = SDL_SetVideoMode(width, height, bpp, flags);
+    INHIBIT(fprintf(stderr, "src/screen.cpp:%d:\n", __LINE__));
     const auto &current = *SDL_GetVideoInfo();
+    INHIBIT(fprintf(stderr, "src/screen.cpp:%d:\n", __LINE__));
+    if (result == nullptr) {
+        fprintf(stderr,"Failed SDL_SetVideoMode: %s", SDL_GetError());
+        fflush(stderr);
+        return result;
+    }
     std::fprintf(stderr, "Video mode is now %dx%d bpp=%u flags=0x%08X\n",
         current.current_w, current.current_h, current.vfmt->BitsPerPixel,
         SDL_GetVideoSurface()->flags);
@@ -110,11 +116,14 @@ int Screen::init()
         SDL_Log("SDL_GetWindowSurface failed: %s", SDL_GetError());
     }
 #else
+    INHIBIT(fprintf(stderr, "SetVideoMode(%d, %d, %d, %d)\n", screen.actual_w, screen.actual_h, SCREEN_BPP, SDL_SWSURFACE));
     surface = SetVideoMode(screen.actual_w, screen.actual_h, SCREEN_BPP,
         SDL_SWSURFACE);
     if (surface == nullptr) {
         std::fprintf(stderr, "SDL_SetVideoMode failed: %s\n", SDL_GetError());
         return 1;
+    }else{
+        INHIBIT(fprintf(stderr, "SDL_SetVideoMode success\n"));
     }
 #endif
     return 0;

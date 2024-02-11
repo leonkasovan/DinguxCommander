@@ -15,10 +15,10 @@
 
 #define VIEWER_PADDING_X 1
 #define VIEWER_PADDING_X_PHYS static_cast<int>(VIEWER_PADDING_X * screen.ppu_x)
-#define VIEWER_LINE_HEIGHT 13
+#define VIEWER_LINE_HEIGHT LINE_HEIGHT
 #define VIEWER_LINE_HEIGHT_PHYS                                                \
     static_cast<int>(VIEWER_LINE_HEIGHT * screen.ppu_y)
-#define VIEWER_Y_LIST 17
+#define VIEWER_Y_LIST VIEWER_LINE_HEIGHT
 #define VIEWER_Y_LIST_PHYS static_cast<int>(VIEWER_Y_LIST * screen.ppu_y)
 #define VIEWER_X_STEP 32
 #define VIEWER_X_STEP_PHYS static_cast<int>(VIEWER_X_STEP * screen.ppu_x)
@@ -136,7 +136,7 @@ void TextViewer::render(const bool focused) const
     std::size_t i = std::min(
         first_line_ + numTotalViewportLines() + 1, lines_for_display_.size());
     SDL_Rect clip = clip_;
-    const int y0 = VIEWER_Y_LIST_PHYS;
+    const int y0 = VIEWER_Y_LIST_PHYS + HEADER_PADDING_TOP_PHYS - 1;
     const int line_height = VIEWER_LINE_HEIGHT_PHYS;
     while (i-- > first_line_) {
         const std::string &line = lines_for_display_[i];

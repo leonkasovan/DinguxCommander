@@ -25,10 +25,10 @@ static std::string kTab = "\t";
 
 constexpr std::size_t kKeyBorderW = 1;
 constexpr std::size_t kMaxKeyW = 19 + kKeyBorderW;
-constexpr std::size_t kMaxKeyH = 17 + kKeyBorderW;
+constexpr std::size_t kMaxKeyH = LINE_HEIGHT + 2 + kKeyBorderW;
 constexpr std::size_t kMaxKeyGap = 2;
 constexpr std::size_t kFrameBorder = 2;
-constexpr std::size_t kTextFieldHeight = 19;
+constexpr std::size_t kTextFieldHeight = LINE_HEIGHT + 6;
 constexpr std::size_t kTextFieldMarginBottom = 2;
 constexpr std::size_t kTextFieldBorder = 2;
 
@@ -212,8 +212,8 @@ void CKeyboard::init()
         SDL_utils::createImage(screen.actual_w, FOOTER_H * screen.ppu_y,
             SDL_MapRGB(surfaces_[0]->format, COLOR_TITLE_BG)));
     SDL_utils::applyText(screen.w / 2, 1, footer_.get(), m_fonts,
-//        "A-Input B-Cancel START-OK L/R⇧ Y← X␣", Globals::g_colorTextTitle,
-        "A-Input B-Cancel START-OK L/R↑ Y← X␣", Globals::g_colorTextTitle,
+    //    "A-Input B-Cancel START-OK L/R⇧ Y← X␣", Globals::g_colorTextTitle,
+        "A:input B:cancel START:ok L1/R1:shift L2/R2:text_cursor Y:del X:space", Globals::g_colorTextTitle,
         { COLOR_TITLE_BG }, SDL_utils::T_TEXT_ALIGN_CENTER);
 }
 
@@ -304,10 +304,11 @@ void CKeyboard::calculateKeyboardDimensions(std::size_t max_w)
     else
         kb.key_gap = 0;
     kb.collapse_borders = kb.key_gap > 0 ? 0 : 1;
+    INHIBIT(std::cout << "CKeyboard: kb.key_gap="<< kb.key_gap << " kb.collapse_borders=" << kb.collapse_borders << std::endl;)
     kb.key_w = (w - 2 * kb.key_gap) * screen.ppu_x;
     kb.key_h = std::min(kb.key_w, kMaxKeyH) * screen.ppu_y;
     keycap_text_offset_y_
-        = std::max(0, std::min(static_cast<int>(kMaxKeyH) - 15, 3))
+        = std::max(0, std::min(static_cast<int>(kMaxKeyH) - LINE_HEIGHT, 3))
         * screen.ppu_y;
     kb.border_w = kKeyBorderW;
     const SDL_Point end
@@ -338,11 +339,13 @@ void CKeyboard::renderKeys(std::vector<SDLSurfaceUniquePtr> &out_surfaces,
             for (const auto &key : row) {
                 renderRectWithBorder(
                     out, key_rect, kb.border_w, key_border_color, key_bg_color);
+                INHIBIT(std::cout << "CKeyboard: key="<< key << " key_rect.x=" << key_rect.x << " key_rect.y=" << key_rect.y << std::endl;)
                 SDL_utils::applyPpuScaledText(
                     key_rect.x + kb.border_w + kb.key_w / 2,
                     key_rect.y + kb.border_w + keycap_text_offset_y_, out,
                     m_fonts, key, Globals::g_colorTextNormal, sdl_key_bg_color,
                     SDL_utils::T_TEXT_ALIGN_CENTER);
+                
                 key_rect.x += kb.key_w + kb.key_gap * screen.ppu_x
                     - (kb.collapse_borders ? kb.border_w : 0);
             }
@@ -354,8 +357,8 @@ void CKeyboard::renderKeys(std::vector<SDLSurfaceUniquePtr> &out_surfaces,
 
 void CKeyboard::render(const bool p_focus) const
 {
-    INHIBIT(std::cout << "CKeyboard::render  fullscreen: " << isFullScreen()
-                      << "  focus: " << p_focus << std::endl;)
+    // INHIBIT(std::cout << "CKeyboard::render  fullscreen: " << isFullScreen()
+                    //   << "  focus: " << p_focus << std::endl;)
     // Draw background layer
     SDL_utils::applyPpuScaledSurface(
         x_, y_, surfaces_[keyboard_.current_keyset].get(), screen.surface);
@@ -379,6 +382,7 @@ void CKeyboard::render(const bool p_focus) const
         clip_rect.y = key_top_left.y;
         clip_rect.w = keyboard_.key_w;
         clip_rect.h = keyboard_.key_h;
+        INHIBIT(std::cout << "CKeyboard: focus_x_="<< focus_x_ << " focus_y_=" << focus_y_ << " coord_x=" << (x_ + kb_buttons_rect_.x + clip_rect.x) << std::endl;)
         SDL_utils::applyPpuScaledSurface(x_ + kb_buttons_rect_.x + clip_rect.x,
             y_ + kb_buttons_rect_.y + clip_rect.y,
             kb_highlighted_surfaces_[keyboard_.current_keyset].get(),
@@ -399,8 +403,13 @@ bool CKeyboard::keyPress(
         m_retVal = -1;
         return true;
     }
+#ifdef RECALBOX
+    if (key == osk_backspace_ || button == c.gamepad_operation)
+        return text_edit_.backspace();
+#else    
     if (key == osk_backspace_ || button == c.gamepad_system)
         return text_edit_.backspace();
+#endif
     if (key == c.key_up || button == c.gamepad_up)
         return moveCursorUp(/*p_loop=*/true);
     if (key == c.key_down || button == c.gamepad_down)
@@ -411,10 +420,21 @@ bool CKeyboard::keyPress(
     if (key == c.key_right || button == c.gamepad_right)
         return isFocusOnTextEdit() ? text_edit_.moveCursorNext()
                                    : moveCursorRight(true);
+#ifdef RECALBOX
+    if (button == c.gamepad_pagetop)
+        return text_edit_.moveCursorPrev();
+    if (button == c.gamepad_pagebottom)
+        return text_edit_.moveCursorNext();
+    if (key == c.key_operation || button == c.gamepad_system) { // X => Space
+        text_edit_.typeText(' ');
+        return true;
+    }
+#else
     if (key == c.key_operation || button == c.gamepad_operation) { // X => Space
         text_edit_.typeText(' ');
         return true;
     }
+#endif    
     if (key == c.key_open || button == c.gamepad_open)
         return pressFocusedKey(); // A => press button
     if (key == c.key_pagedown || button == c.gamepad_pagedown) {

@@ -31,6 +31,10 @@ struct Config {
     // Resources directory (e.g. icons).
     std::string res_dir { RES_DIR };
 
+#ifdef RECALBOX
+    std::string font_file = FONT_FILE;
+    int font_size = FONT_SIZE;
+#endif
     // Keyboard key code mappings
     SDLC_Keycode key_down = CMDR_KEY_DOWN;
     SDLC_Keycode key_left = CMDR_KEY_LEFT;
@@ -55,6 +59,8 @@ struct Config {
     ControllerButton gamepad_operation = CMDR_GAMEPAD_OPERATION;
     ControllerButton gamepad_pagedown = CMDR_GAMEPAD_PAGEDOWN;
     ControllerButton gamepad_pageup = CMDR_GAMEPAD_PAGEUP;
+    ControllerButton gamepad_pagebottom = CMDR_GAMEPAD_PAGEBOTTOM;
+    ControllerButton gamepad_pagetop = CMDR_GAMEPAD_PAGETOP;
     ControllerButton gamepad_parent = CMDR_GAMEPAD_PARENT;
     ControllerButton gamepad_right = CMDR_GAMEPAD_RIGHT;
     ControllerButton gamepad_select = CMDR_GAMEPAD_SELECT;
@@ -63,6 +69,8 @@ struct Config {
     ControllerButton gamepad_up = CMDR_GAMEPAD_UP;
 #if defined(KORIKI) && defined(USE_SDL)
     ControllerButton gamepad_menu = CMDR_GAMEPAD_MENU;	// added for RG35xx
+#elif defined(RECALBOX)
+    ControllerButton gamepad_menu = CMDR_GAMEPAD_MENU;	// added for RG353P
 #endif    
 
     // On-screen keyboard settings.

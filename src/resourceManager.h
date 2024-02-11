@@ -15,6 +15,9 @@ class CResourceManager
     public:
 
     static void SetResDir(const char *res_dir);
+#ifdef RECALBOX    
+    static void SetFont(const char *font_file, int font_size);
+#endif
 
     typedef enum
     {

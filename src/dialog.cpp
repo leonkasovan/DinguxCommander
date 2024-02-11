@@ -189,7 +189,7 @@ void CDialog::render(const bool p_focus) const
         p_focus ? m_cursor1 : m_cursor2, screen.surface);
     // Draw lines text
     const int text_x = m_cursorX + padding_x_;
-    int text_y = static_cast<int>(m_y) + static_cast<int>(4 * screen.ppu_y);
+    int text_y = static_cast<int>(m_y) + static_cast<int>(DIALOG_BORDER * screen.ppu_y);
     if (m_nbTitle) {
         SDL_utils::applyPpuScaledSurface(text_x, text_y - 1, m_titleImg, screen.surface, &m_clip);
         text_y += line_height_;

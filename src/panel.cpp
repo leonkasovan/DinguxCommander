@@ -206,8 +206,11 @@ void CPanel::render(const bool p_active) const
             l_rect.h = l_surfaceTmp->h;
             text_clip_rect = &l_rect;
         }
+        // SDL_utils::applyPpuScaledSurface(l_x,
+        //     l_y + static_cast<int>(2 * screen.ppu_y), l_surfaceTmp,
+        //     screen.surface, text_clip_rect);
         SDL_utils::applyPpuScaledSurface(l_x,
-            l_y + static_cast<int>(2 * screen.ppu_y), l_surfaceTmp,
+            l_y , l_surfaceTmp,
             screen.surface, text_clip_rect);
         SDL_FreeSurface(l_surfaceTmp);
         // Next line
@@ -248,7 +251,9 @@ const bool CPanel::moveCursorUp(unsigned char p_step)
         // Return true for new render
         return true;
     }
-    return false;
+    m_highlightedLine = m_fileLister.getNbTotal()-1;
+    adjustCamera();
+    return true;
 }
 
 const bool CPanel::moveCursorDown(unsigned char p_step)
@@ -261,6 +266,35 @@ const bool CPanel::moveCursorDown(unsigned char p_step)
             m_highlightedLine = l_nb - 1;
         else
             m_highlightedLine += p_step;
+        // Adjust camera
+        adjustCamera();
+        // Return true for new render
+        return true;
+    }
+    m_highlightedLine = 0;
+    adjustCamera();
+    return true;
+}
+
+const bool CPanel::moveCursorTop()
+{
+    if (m_highlightedLine)
+    {
+        m_highlightedLine = 0;
+        // Adjust camera
+        adjustCamera();
+        // Return true for new render
+        return true;
+    }
+    return false;
+}
+
+const bool CPanel::moveCursorBottom()
+{
+    const unsigned int l_nb = m_fileLister.getNbTotal();
+    if (m_highlightedLine < l_nb - 1)
+    {
+        m_highlightedLine = l_nb - 1;
         // Adjust camera
         adjustCamera();
         // Return true for new render

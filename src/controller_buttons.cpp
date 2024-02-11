@@ -10,7 +10,7 @@ ControllerButton ControllerButtonFromSdlEvent(const SDL_Event &event)
 {
     switch (event.type) {
         case SDL_CONTROLLERAXISMOTION:
-            fprintf(stderr,"src/controller_buttons.cpp:%d event SDL_CONTROLLERAXISMOTION\n",__LINE__);
+            // fprintf(stderr,"src/controller_buttons.cpp:%d event SDL_CONTROLLERAXISMOTION\n",__LINE__);
             switch (event.caxis.axis) {
                 case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
                     if (event.caxis.value < 8192) { // 25% pressed
@@ -36,23 +36,23 @@ ControllerButton ControllerButtonFromSdlEvent(const SDL_Event &event)
             break;
         case SDL_CONTROLLERBUTTONDOWN:
         case SDL_CONTROLLERBUTTONUP:
-            fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON=%d\n",__LINE__,event.cbutton.button);
+            // fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON=%d\n",__LINE__,event.cbutton.button);
             switch (event.cbutton.button) {
                 case SDL_CONTROLLER_BUTTON_A: return ControllerButton::A;
                 case SDL_CONTROLLER_BUTTON_B: return ControllerButton::B;
                 case SDL_CONTROLLER_BUTTON_X: return ControllerButton::X;
                 case SDL_CONTROLLER_BUTTON_Y: return ControllerButton::Y;
                 case SDL_CONTROLLER_BUTTON_LEFTSTICK:
-                    fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_LEFTSTICK=%d\n",__LINE__,event.cbutton.button);
+                    // fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_LEFTSTICK=%d\n",__LINE__,event.cbutton.button);
                     return ControllerButton::LEFTSTICK;
                 case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
-                    fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_RIGHTSTICK=%d\n",__LINE__,event.cbutton.button);
+                    // fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_RIGHTSTICK=%d\n",__LINE__,event.cbutton.button);
                     return ControllerButton::RIGHTSTICK;
                 case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-                    fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_LEFTSHOULDER=%d\n",__LINE__,event.cbutton.button);
+                    // fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_LEFTSHOULDER=%d\n",__LINE__,event.cbutton.button);
                     return ControllerButton::LEFTSHOULDER;
                 case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-                    fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_RIGHTSHOULDER=%d\n",__LINE__,event.cbutton.button);
+                    // fprintf(stderr,"src/controller_buttons.cpp:%d SDL_CONTROLLER_BUTTON_RIGHTSHOULDER=%d\n",__LINE__,event.cbutton.button);
                     return ControllerButton::RIGHTSHOULDER;
                 case SDL_CONTROLLER_BUTTON_START:
                     return ControllerButton::START;
@@ -66,10 +66,12 @@ ControllerButton ControllerButtonFromSdlEvent(const SDL_Event &event)
                     return ControllerButton::LEFT;
                 case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
                     return ControllerButton::RIGHT;
+                case SDL_CONTROLLER_BUTTON_GUIDE:
+                    return ControllerButton::MENU;
                 default: break;
             }
         default: 
-            fprintf(stderr,"src/controller_buttons.cpp:%d event.type=%d\n",__LINE__,event.type);
+            // fprintf(stderr,"src/controller_buttons.cpp:%d event.type=%d\n",__LINE__,event.type);
             break;
     }
     return ControllerButton::NONE;

@@ -93,7 +93,9 @@ int main(int argc, char *argv[])
     if (!res_dir.empty()) cfg.res_dir = res_dir;
 
     CResourceManager::SetResDir(cfg.res_dir.c_str());
-
+#ifdef RECALBOX
+    CResourceManager::SetFont(cfg.font_file.c_str(), cfg.font_size);
+#endif
     // Avoid crash due to the absence of mouse
     char l_s[]="SDL_NOMOUSE=1";
     putenv(l_s);

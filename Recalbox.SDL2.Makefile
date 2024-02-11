@@ -17,8 +17,11 @@ CXXFLAGS += -DPPU_X=1.666666
 CXXFLAGS += -DPPU_Y=1.666666
 CXXFLAGS += -DAUTOSCALE=0
 CXXFLAGS += -DSCREEN_BPP=16
+CXXFLAGS += -DFONT_FILE=\"default.ttf\"
+CXXFLAGS += -DFONT_SIZE=17
 RES_DIR := res
 CXXFLAGS += -DRES_DIR="\"$(RES_DIR)\""
+CXXFLAGS += -DFONTS='{"default.ttf",17}'
 
 LINKFLAGS += -s
 LINKFLAGS += $(shell $(SDL_CONFIG) --libs) -lSDL2_image -lSDL2_ttf -lSDL2_gfx -lm -lstdc++

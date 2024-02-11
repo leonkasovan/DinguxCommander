@@ -104,6 +104,12 @@
 #ifndef CMDR_GAMEPAD_PAGEDOWN
 #define CMDR_GAMEPAD_PAGEDOWN ControllerButton::RIGHTSHOULDER
 #endif
+#ifndef CMDR_GAMEPAD_PAGETOP
+#define CMDR_GAMEPAD_PAGETOP ControllerButton::TRIGGERLEFT
+#endif
+#ifndef CMDR_GAMEPAD_PAGEBOTTOM
+#define CMDR_GAMEPAD_PAGEBOTTOM ControllerButton::TRIGGERRIGHT
+#endif
 #ifndef CMDR_GAMEPAD_OPEN
 #define CMDR_GAMEPAD_OPEN ControllerButton::B
 #endif

@@ -207,6 +207,9 @@ void Config::Load(const std::string &path)
     processEnvValue(&file_system);
     CFG_STR(res_dir)
     processEnvValue(&res_dir);
+    CFG_STR(font_file)
+    processEnvValue(&font_file);
+    CFG_INT(font_size)
 
     CFG_BOOL(osk_key_system_is_backspace)
 
@@ -257,6 +260,8 @@ void Config::Save(const std::string &config_path)
         outputFile << "path_default_right_fallback=" << path_default_right_fallback << std::endl;
         outputFile << "file_system=" << file_system << std::endl;
         outputFile << "res_dir=" << res_dir << std::endl;
+        outputFile << "font_file=" << font_file << std::endl;
+        outputFile << "font_size=" << font_size << std::endl;
 
         // Close the file when you're done
         outputFile.close();
@@ -278,6 +283,8 @@ void Config::Save(const std::string &config_path, const std::string l_path, cons
         outputFile << "path_default_right_fallback=" << path_default_right_fallback << std::endl;
         outputFile << "file_system=" << file_system << std::endl;
         outputFile << "res_dir=" << res_dir << std::endl;
+        outputFile << "font_file=" << font_file << std::endl;
+        outputFile << "font_size=" << font_size << std::endl;
  
         // Close the file when you're done
         outputFile.close();

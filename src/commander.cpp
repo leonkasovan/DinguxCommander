@@ -107,6 +107,8 @@ bool CCommander::keyPress(
     if (key == c.key_system || button == c.gamepad_system) {	// added MENU for RG35xx
 #elif defined(GARLIC)
     if (key == c.key_system || key == c.key_menu || button == c.gamepad_system) {	// added MENU for RG35xx Garlic
+#elif defined(RECALBOX)
+    if (key == c.key_system || button == c.gamepad_menu || button == c.gamepad_system) {	// added MENU for RG353P Recalbox
 #elif defined(KORIKI) && defined(USE_SDL)
     if (key == c.key_system || button == c.gamepad_menu || button == c.gamepad_system) {	// added MENU for RG35xx Koriki
 #endif
@@ -119,6 +121,10 @@ bool CCommander::keyPress(
         return actionPageUp();
     if (key == c.key_pagedown || button == c.gamepad_pagedown)
         return actionPageDown();
+    if (button == c.gamepad_pagetop)
+        return actionPageTop();
+    if (button == c.gamepad_pagebottom)
+        return actionPageBottom();
     if (key == c.key_left || button == c.gamepad_left) {
         if (m_panelSource != &m_panelRight) return false;
         m_panelSource = &m_panelLeft;
@@ -162,6 +168,14 @@ bool CCommander::actionPageUp()
 bool CCommander::actionPageDown()
 {
     return m_panelSource->moveCursorDown(NB_VISIBLE_LINES - 1);
+}
+bool CCommander::actionPageTop()
+{
+    return m_panelSource->moveCursorTop();
+}
+bool CCommander::actionPageBottom()
+{
+    return m_panelSource->moveCursorBottom();
 }
 bool CCommander::actionSelect() { return m_panelSource->addToSelectList(true); }
 

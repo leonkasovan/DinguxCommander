@@ -27,6 +27,8 @@ class CPanel
     // Move cursor
     const bool moveCursorUp(unsigned char p_step);
     const bool moveCursorDown(unsigned char p_step);
+    const bool moveCursorTop();
+    const bool moveCursorBottom();
     void moveCursorToVisibleLineIndex(int index);
 
     // Returns the viewport line index at the given coordinates or -1.

@@ -45,10 +45,26 @@ static constexpr FontSpec kLowDpiFonts[] = {LOW_DPI_FONTS};
 static constexpr std::size_t kLowDpiFontsLen = sizeof(kLowDpiFonts) / sizeof(kLowDpiFonts[0]);
 
 std::string ResDir = RES_DIR "";
-
 std::string ResPath(const char *path) { return ResDir + path; }
 std::string ResPath(const std::string &path) { return ResDir + path; }
 
+#ifdef RECALBOX
+std::string font_file;
+int font_size;
+std::vector<TTF_Font *> LoadFonts(bool low_dpi) {
+    std::vector<TTF_Font *> fonts;
+    fonts.reserve(1);
+    
+    const std::string &path = font_file;
+    auto *font = SDL_utils::loadFont(path.front() == '/' ? path : ResPath(path), font_size);
+    if (font != nullptr) fonts.push_back(font);
+    if (fonts.empty()) {
+        std::cerr << "No fonts found!" << std::endl;
+        exit(1);
+    }
+    return fonts;
+}
+#else
 std::vector<TTF_Font *> LoadFonts(bool low_dpi) {
     const FontSpec *specs = low_dpi ? kLowDpiFonts : kFonts;
     const std::size_t len = low_dpi ? kLowDpiFontsLen : kFontsLen;
@@ -65,6 +81,7 @@ std::vector<TTF_Font *> LoadFonts(bool low_dpi) {
     }
     return fonts;
 }
+#endif
 
 bool ShouldUseLowDpiFonts() {
     return screen.ppu_x <= 1.0 && kFonts[0].size < 12;
@@ -78,6 +95,12 @@ void CResourceManager::SetResDir(const char *res_dir)
     if (!ResDir.empty() && ResDir.back() != '/') ResDir += '/';
     std::fprintf(stderr, "Set resource directory to %s\n", ResDir.c_str());
 }
+#ifdef RECALBOX
+void CResourceManager::SetFont(const char *file, int size){
+    font_file = file;
+    font_size = size;
+}
+#endif
 
 CResourceManager& CResourceManager::instance()
 {
